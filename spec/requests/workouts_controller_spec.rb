@@ -1,9 +1,4 @@
 require "rails_helper"
-require "helpers"
-
-RSpec.configure do |c|
-  c.include Helpers
-end
 
 RSpec.describe WorkoutsController, type: :request do
 	let(:trainer)   { create(:trainer, trainees: [create(:trainee)]) }
