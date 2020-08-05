@@ -1,7 +1,7 @@
 class WorkoutsController < BaseController
-  before_action :authorize_trainer, except: [:index, :perform, :performances]
-  before_action :authorize_trainee, only: [:perform, :performances]
-  before_action :load_workout, except: [:index, :create]
+  before_action :authorize_trainer, except: [:index, :perform, :overview]
+  before_action :authorize_trainee, only: [:perform, :overview]
+  before_action :load_workout, except: [:index, :create, :overview]
 
   def index
     render_response current_user.workouts
@@ -70,18 +70,18 @@ class WorkoutsController < BaseController
     end
   end
 
-  def performances
-    performances = current_user.workout_performances.where(workout_id: @workout.id)
+  def overview
+    performances = current_user.workout_performances
 
     if params[:start_date].present?
       performances = performances.where("started_at >= ?", params[:start_date])
     end
 
     if params[:end_date].present?
-      performances = performances.where("started_at <= ?", params[:end_date])
+      performances = performances.where("ended_at <= ?", params[:end_date])
     end
 
-    render_response performances
+    render_response performances.map(&:workout).uniq
   end
 
   def destroy

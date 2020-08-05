@@ -25,8 +25,4 @@ class UsersController < BaseController
       render_error "Could not find trainers"
     end
   end
-
-  def workouts
-    render_response current_user.workouts
-  end
 end

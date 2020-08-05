@@ -5,17 +5,19 @@ Rails.application.routes.draw do
     member do 
       post :assign_exercises
       post :assign_to_trainees
-      post :performances
       get  :perform
       get  :exercises
       get  :trainees
+    end
+
+    collection do
+      post :overview
     end
   end
 
   resources :exercises, only: [:index, :create]
 
   get  'trainees',         to: 'users#trainees'
-  get  'my_workouts',      to: 'users#workouts'
   post 'trainers',         to: 'users#trainers'
   post 'choose_trainers',  to: 'users#choose_trainers'
 end
