@@ -4,17 +4,12 @@ class BaseController < ApplicationController
 
   protected
 
-  def authorize_trainer
-    unless current_user.is_a?(Trainer)
-      render_unauthorized "You are not allowed to perform this action" 
-      return false
-    end
-  end
-
-  def authorize_trainee
-    unless current_user.is_a?(Trainee)
-      render_unauthorized "You are not allowed to perform this action" 
-      return false
+  ["trainer", "trainee"].each do |user_type|
+    define_method "authorize_#{user_type}" do
+      unless current_user.is_a?(user_type.capitalize.constantize)
+        render_unauthorized "You are not allowed to perform this action" 
+        return false
+      end
     end
   end
 
